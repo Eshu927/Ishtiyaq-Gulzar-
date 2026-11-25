@@ -146,6 +146,12 @@
       transform: scale(1);
     }
 
+    .video-stage.pos-bg {
+      right: 2%;
+      opacity: 0.28;
+      transform: scale(1.02);
+    }
+
     .video-stage.pos-hidden {
       right: 2%;
       opacity: 0;
@@ -1250,6 +1256,11 @@
         opacity: 0.55;
       }
 
+      .video-stage.pos-bg {
+        right: -12%;
+        opacity: 0.25;
+      }
+
       .video-stage.pos-hidden {
         right: -12%;
         opacity: 0;
@@ -1312,7 +1323,7 @@
     <div class="loader-count" id="loaderCount">0%</div>
   </div>
 
-  <!-- 3-Clip Sticky Choreography Stage (Hero & About only, fades out cleanly below) -->
+  <!-- 3-Clip Sticky Choreography Stage (Hero, About & Work, fades out cleanly at Reviews/Contact) -->
   <div class="video-stage pos-hero" id="videoStage" aria-hidden="true">
     <video class="stage-clip active" id="vid1" src="https://cdn.jsdelivr.net/gh/Eshu927/Ishtiyaq-Gulzar-@main/Vdo1.mp4" autoplay muted playsinline preload="auto"></video>
     <video class="stage-clip" id="vid2" src="https://cdn.jsdelivr.net/gh/Eshu927/Ishtiyaq-Gulzar-@main/Vdo2.mp4" muted playsinline preload="auto"></video>
@@ -2134,7 +2145,7 @@
     }, 1200);
 
     // =========================================
-    // 1. 3-VIDEO SLOW CHOREOGRAPHY & CLEAN FADE-OUT BELOW ABOUT
+    // 1. 3-VIDEO SLOW CHOREOGRAPHY & CLEAN FADE-OUT AT REVIEWS/CONTACT
     // =========================================
     const stage = document.getElementById('videoStage');
     const vid1 = document.getElementById('vid1');
@@ -2143,6 +2154,7 @@
     const allVids = [vid1, vid2, vid3];
     const aboutSec = document.getElementById('about');
     const skillsSec = document.getElementById('skills');
+    const feedbackSec = document.getElementById('feedback');
 
     let currentActiveVid = null;
 
@@ -2196,6 +2208,8 @@
         activateStage(vid1, 'pos-hero');
       } else if (scrollY >= aboutSec.offsetTop - trigger && scrollY < skillsSec.offsetTop - trigger) {
         activateStage(vid2, 'pos-about');
+      } else if (scrollY >= skillsSec.offsetTop - trigger && scrollY < feedbackSec.offsetTop - trigger) {
+        activateStage(vid3, 'pos-bg');
       } else {
         activateStage(null, 'pos-hidden');
       }
