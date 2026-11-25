@@ -1221,24 +1221,24 @@
       }
 
       .video-stage {
-        width: 72vw;
-        right: -12%;
+        width: 82vw;
+        right: -10%;
         z-index: 0;
       }
 
       .video-stage.pos-hero {
-        right: -12%;
-        opacity: 0.36;
+        right: -10%;
+        opacity: 0.78;
       }
 
       .video-stage.pos-about {
-        right: 36%;
-        opacity: 0.32;
+        right: 32%;
+        opacity: 0.68;
       }
 
       .video-stage.pos-bg {
         right: -8%;
-        opacity: 0.16;
+        opacity: 0.25;
       }
 
       .about-split,
@@ -1300,15 +1300,9 @@
 
   <!-- 3-Clip Sticky Choreography Stage (Slow playback, freezes on final pose) -->
   <div class="video-stage pos-hero" id="videoStage" aria-hidden="true">
-    <video class="stage-clip active" id="vid1" muted playsinline preload="auto">
-      <source src="Video1.mp4" type="video/mp4" />
-    </video>
-    <video class="stage-clip" id="vid2" muted playsinline preload="auto">
-      <source src="Video2.mp4" type="video/mp4" />
-    </video>
-    <video class="stage-clip" id="vid3" muted playsinline preload="auto">
-      <source src="Video3.mp4" type="video/mp4" />
-    </video>
+    <video class="stage-clip active" id="vid1" src="Video1.mp4" autoplay muted playsinline preload="auto"></video>
+    <video class="stage-clip" id="vid2" src="Video2.mp4" muted playsinline preload="auto"></video>
+    <video class="stage-clip" id="vid3" src="Video3.mp4" muted playsinline preload="auto"></video>
     <div class="stage-vignette"></div>
   </div>
 
@@ -2142,6 +2136,14 @@
         v.playbackRate = 0.72;
       });
     });
+
+    // Force initial play & unlock on first mobile touch if browser blocks autoplay
+    vid1.play().catch(() => {});
+    document.addEventListener('touchstart', () => {
+      if (currentActiveVid && currentActiveVid.paused) {
+        currentActiveVid.play().catch(() => {});
+      }
+    }, { once: true });
 
     function activateStage(activeVid, posClass) {
       stage.className = 'video-stage ' + posClass;
