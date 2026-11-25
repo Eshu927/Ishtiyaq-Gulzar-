@@ -1,0 +1,2671 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ishtiyaq Gulzar — Full-Stack Web Designer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,500;0,700;1,400;1,600&family=Syne:wght@700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg-base: #0a0a0c;
+      --bg-card: rgba(18, 16, 18, 0.86);
+      --border-line: rgba(255, 255, 255, 0.11);
+      --text-main: #f4f4f6;
+      --text-muted: #9a9aa2;
+      --accent-red: #e11d48;
+      --accent-crimson: rgba(159, 18, 57, 0.24);
+      --font-sans: 'Syne', sans-serif;
+      --font-serif: 'Playfair Display', serif;
+      --font-body: 'Inter', sans-serif;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      background-color: var(--bg-base);
+      color: var(--text-main);
+      font-family: var(--font-body);
+    }
+
+    body {
+      background-color: var(--bg-base);
+      overflow-x: hidden;
+      line-height: 1.65;
+    }
+
+    .dot, .red {
+      color: var(--accent-red);
+    }
+
+    .serif-italic {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-weight: 400;
+      text-transform: none;
+      letter-spacing: 0;
+    }
+
+    /* =========================================
+       00. EDITORIAL PRELOADER
+       ========================================= */
+    .preloader {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: var(--bg-base);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+      transition: transform 0.85s cubic-bezier(0.77, 0, 0.175, 1), opacity 0.6s ease;
+    }
+
+    .preloader.loaded {
+      transform: translateY(-100%);
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .loader-name {
+      font-family: var(--font-sans);
+      font-size: clamp(1.2rem, 3vw, 1.8rem);
+      font-weight: 800;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+    }
+
+    .loader-count {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-size: 1.35rem;
+      color: var(--accent-red);
+    }
+
+    /* =========================================
+       3-VIDEO STICKY CHOREOGRAPHY STAGE
+       ========================================= */
+    .video-stage {
+      position: fixed;
+      top: 0;
+      right: 2%;
+      width: 48vw;
+      max-width: 600px;
+      height: 100vh;
+      z-index: 0;
+      pointer-events: none;
+      transition:
+        right 0.95s cubic-bezier(0.22, 1, 0.36, 1),
+        opacity 0.85s ease,
+        transform 0.95s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .stage-clip {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+      opacity: 0;
+      transition: opacity 0.7s ease-in-out;
+      filter: contrast(1.14) saturate(0.75) brightness(0.86);
+      -webkit-mask-image: radial-gradient(ellipse 66% 78% at 52% 48%, #000 44%, transparent 95%);
+      mask-image: radial-gradient(ellipse 66% 78% at 52% 48%, #000 44%, transparent 95%);
+    }
+
+    .stage-clip.active {
+      opacity: 1;
+    }
+
+    .stage-vignette {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      background:
+        linear-gradient(to right, var(--bg-base) 2%, transparent 32%, transparent 68%, var(--bg-base) 98%),
+        linear-gradient(to bottom, var(--bg-base) 2%, transparent 22%, transparent 74%, var(--bg-base) 98%);
+    }
+
+    .video-stage.pos-hero {
+      right: 2%;
+      opacity: 0.95;
+      transform: scale(1);
+    }
+
+    .video-stage.pos-about {
+      right: 50%;
+      opacity: 0.92;
+      transform: scale(1);
+    }
+
+    .video-stage.pos-bg {
+      right: 2%;
+      opacity: 0.22;
+      transform: scale(1.03);
+    }
+
+    /* =========================================
+       FIXED NAVBAR (Mobile Clipping Fixed)
+       ========================================= */
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      padding: 1rem 5%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.75rem;
+      z-index: 60;
+      background: rgba(10, 10, 12, 0.92);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      backdrop-filter: blur(12px);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.55rem;
+      text-decoration: none;
+      color: var(--text-main);
+      font-family: var(--font-sans);
+      font-size: 0.85rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      white-space: nowrap;
+    }
+
+    .brand-badge {
+      padding: 0.18rem 0.42rem;
+      border: 1px solid var(--border-line);
+      font-size: 0.72rem;
+      color: var(--accent-red);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 1.3rem;
+    }
+
+    .nav-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.74rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      position: relative;
+      transition: color 0.3s ease;
+      white-space: nowrap;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: -4px;
+      width: 0;
+      height: 1.5px;
+      background: var(--accent-red);
+      transition: width 0.3s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--text-main);
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    /* =========================================
+       SHARED SECTION LAYOUT (Navbar Overlap Fixed)
+       ========================================= */
+    main, footer {
+      position: relative;
+      z-index: 2;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 0 5%;
+    }
+
+    .section {
+      min-height: 100vh;
+      padding: 7.5rem 0 6rem;
+      display: flex;
+      align-items: center;
+      scroll-margin-top: 4.5rem;
+    }
+
+    .section-kicker {
+      display: block;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--accent-red);
+      margin-bottom: 0.75rem;
+    }
+
+    .editorial-heading {
+      font-family: var(--font-sans);
+      font-size: clamp(2.2rem, 5.2vw, 4.3rem);
+      font-weight: 800;
+      line-height: 1.02;
+      text-transform: uppercase;
+      margin-bottom: 2rem;
+      transition: transform 0.35s ease, text-shadow 0.35s ease;
+    }
+
+    .editorial-heading:hover {
+      transform: translateX(6px);
+      text-shadow: 0 0 28px rgba(225, 29, 72, 0.28);
+    }
+
+    /* =========================================
+       01. HERO SECTION
+       ========================================= */
+    .hero-wrap {
+      max-width: 600px;
+      position: relative;
+      z-index: 3;
+    }
+
+    .hero-role {
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 1rem;
+    }
+
+    .hero-title {
+      font-family: var(--font-sans);
+      font-size: clamp(2.9rem, 7.2vw, 5.8rem);
+      font-weight: 800;
+      line-height: 0.94;
+      margin-bottom: 1.25rem;
+    }
+
+    .hero-tagline {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-size: clamp(1.35rem, 2.5vw, 2rem);
+      color: var(--text-main);
+      line-height: 1.3;
+      margin-bottom: 1.25rem;
+    }
+
+    .hero-bio {
+      color: var(--text-muted);
+      font-size: 0.98rem;
+      max-width: 48ch;
+      margin-bottom: 2.1rem;
+    }
+
+    .cta-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .btn {
+      padding: 0.88rem 1.75rem;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border: 1px solid var(--border-line);
+      color: var(--text-main);
+      background: rgba(255, 255, 255, 0.03);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.45rem;
+    }
+
+    .btn-white {
+      background: var(--text-main);
+      color: var(--bg-base);
+      border-color: var(--text-main);
+    }
+
+    .btn-white:hover {
+      background: var(--accent-red);
+      border-color: var(--accent-red);
+      color: #fff;
+      transform: translateY(-2px);
+    }
+
+    .btn-dark:hover {
+      border-color: var(--accent-red);
+      color: var(--accent-red);
+      transform: translateY(-2px);
+    }
+
+    .btn-sm {
+      padding: 0.55rem 1.05rem;
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+    }
+
+    /* =========================================
+       02. ABOUT SECTION
+       ========================================= */
+    .about-split {
+      display: grid;
+      grid-template-columns: 1fr 1.15fr;
+      gap: 3rem;
+      align-items: center;
+    }
+
+    .about-portrait-card {
+      width: 136px;
+      height: 168px;
+      border: 1px solid var(--border-line);
+      overflow: hidden;
+      margin-bottom: 1.5rem;
+      background: #121216;
+    }
+
+    .about-portrait-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+      filter: contrast(1.1) saturate(0.8);
+    }
+
+    .about-body p {
+      color: var(--text-muted);
+      font-size: 0.96rem;
+      margin-bottom: 1rem;
+    }
+
+    .about-body strong {
+      color: var(--text-main);
+      font-weight: 500;
+    }
+
+    .stats-2x2 {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.3rem;
+      margin-top: 1.8rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border-line);
+    }
+
+    .stat-box h4 {
+      font-family: var(--font-sans);
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: var(--text-main);
+    }
+
+    .stat-box span {
+      font-size: 0.74rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    /* =========================================
+       03. SKILLS ("TOOL kit.")
+       ========================================= */
+    .skills-table {
+      border-top: 1px solid var(--border-line);
+      margin-top: 1.5rem;
+    }
+
+    .skill-row {
+      display: grid;
+      grid-template-columns: 56px 240px 1fr;
+      align-items: center;
+      gap: 1rem;
+      padding: 1.45rem 0.5rem;
+      border-bottom: 1px solid var(--border-line);
+      transition: background 0.3s ease, padding-left 0.3s ease;
+    }
+
+    .skill-row:hover {
+      background: rgba(255, 255, 255, 0.025);
+      padding-left: 1.1rem;
+    }
+
+    .skill-idx {
+      font-size: 0.76rem;
+      font-weight: 600;
+      color: var(--accent-red);
+    }
+
+    .skill-name {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-size: 1.5rem;
+      color: var(--text-main);
+    }
+
+    .skill-items {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.65rem;
+    }
+
+    .skill-items span {
+      font-size: 0.84rem;
+      padding: 0.32rem 0.85rem;
+      border: 1px solid var(--border-line);
+      color: var(--text-muted);
+      transition: all 0.25s ease;
+    }
+
+    .skill-row:hover .skill-items span {
+      color: var(--text-main);
+      border-color: rgba(225, 29, 72, 0.45);
+    }
+
+    .diving-bar {
+      margin-top: 2rem;
+      padding: 1.1rem 1.4rem;
+      border: 1px solid var(--border-line);
+      background: rgba(255, 255, 255, 0.02);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 1rem;
+      font-size: 0.84rem;
+    }
+
+    .diving-label {
+      color: var(--accent-red);
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      font-size: 0.74rem;
+    }
+
+    /* =========================================
+       04. SELECTED WORK (15 Projects + Filter Tabs + Live Modal)
+       ========================================= */
+    .filter-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.65rem;
+      margin-bottom: 2rem;
+    }
+
+    .filter-btn {
+      padding: 0.55rem 1.15rem;
+      font-family: var(--font-body);
+      font-size: 0.74rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      border: 1px solid var(--border-line);
+      background: rgba(255, 255, 255, 0.02);
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+
+    .filter-btn:hover,
+    .filter-btn.active {
+      border-color: var(--accent-red);
+      background: var(--accent-crimson);
+      color: var(--text-main);
+    }
+
+    .projects-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 1.4rem;
+    }
+
+    .editorial-project {
+      display: grid;
+      grid-template-columns: 1.55fr 0.75fr;
+      gap: 2rem;
+      padding: 2rem;
+      border: 1px solid var(--border-line);
+      background: linear-gradient(125deg, var(--accent-crimson) 0%, var(--bg-card) 58%);
+      backdrop-filter: blur(12px);
+      transition: transform 0.35s ease, border-color 0.35s ease;
+    }
+
+    .editorial-project.hidden-card {
+      display: none;
+    }
+
+    .editorial-project:hover {
+      transform: translateX(8px);
+      border-color: var(--accent-red);
+    }
+
+    .proj-tag {
+      font-size: 0.72rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--accent-red);
+      display: block;
+      margin-bottom: 0.45rem;
+    }
+
+    .editorial-project h3 {
+      font-family: var(--font-sans);
+      font-size: clamp(1.25rem, 2.3vw, 1.75rem);
+      margin-bottom: 0.6rem;
+    }
+
+    .editorial-project p {
+      color: var(--text-muted);
+      font-size: 0.93rem;
+      margin-bottom: 1.15rem;
+    }
+
+    .proj-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+
+    .proj-stack-list {
+      border-left: 1px solid var(--border-line);
+      padding-left: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 0.45rem;
+      list-style: none;
+    }
+
+    .proj-stack-list li {
+      font-size: 0.78rem;
+      color: var(--text-main);
+      letter-spacing: 0.04em;
+    }
+
+    /* Project Detail Modal */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      background: rgba(5, 5, 7, 0.88);
+      backdrop-filter: blur(10px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 1.25rem;
+    }
+
+    .modal-backdrop.open {
+      display: flex;
+    }
+
+    .modal-card {
+      width: 100%;
+      max-width: 640px;
+      border: 1px solid var(--border-line);
+      background: linear-gradient(145deg, rgba(159, 18, 57, 0.22) 0%, #0f0f12 60%);
+      padding: 2.2rem;
+      position: relative;
+      animation: modalFade 0.3s ease;
+    }
+
+    @keyframes modalFade {
+      from { opacity: 0; transform: translateY(16px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 1.2rem;
+      right: 1.2rem;
+      background: transparent;
+      border: 1px solid var(--border-line);
+      color: var(--text-main);
+      width: 34px;
+      height: 34px;
+      font-size: 1.1rem;
+      cursor: pointer;
+    }
+
+    .modal-close:hover {
+      border-color: var(--accent-red);
+      color: var(--accent-red);
+    }
+
+    .modal-features {
+      margin: 1.2rem 0 1.6rem;
+      padding-left: 1.1rem;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    .modal-features li {
+      margin-bottom: 0.4rem;
+    }
+
+    /* =========================================
+       05. JOURNEY, ACHIEVEMENTS & CERTIFICATIONS
+       ========================================= */
+    .journey-split {
+      display: grid;
+      grid-template-columns: 0.85fr 1.25fr;
+      gap: 3rem;
+      align-items: start;
+      border-top: 1px solid var(--border-line);
+      padding-top: 2.2rem;
+    }
+
+    .journey-sticky-title {
+      position: sticky;
+      top: 6.5rem;
+    }
+
+    .timeline-block {
+      border-left: 1.5px solid var(--border-line);
+      padding-left: 1.5rem;
+      margin-bottom: 1.85rem;
+      position: relative;
+      transition: border-color 0.3s ease;
+    }
+
+    .timeline-block:hover {
+      border-left-color: var(--accent-red);
+    }
+
+    .timeline-block::before {
+      content: '';
+      position: absolute;
+      left: -5px;
+      top: 6px;
+      width: 9px;
+      height: 9px;
+      background: var(--accent-red);
+    }
+
+    .timeline-block h4 {
+      font-family: var(--font-sans);
+      font-size: 1.12rem;
+      margin: 0.25rem 0 0.35rem;
+    }
+
+    .timeline-block p {
+      color: var(--text-muted);
+      font-size: 0.91rem;
+    }
+
+    .achieve-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.25rem;
+      margin-top: 1.5rem;
+      margin-bottom: 3rem;
+    }
+
+    .achieve-card {
+      padding: 1.5rem;
+      border: 1px solid var(--border-line);
+      background: var(--bg-card);
+      transition: border-color 0.3s ease;
+    }
+
+    .achieve-card:hover {
+      border-color: var(--accent-red);
+    }
+
+    .achieve-card h4 {
+      font-family: var(--font-sans);
+      font-size: 1.1rem;
+      margin-bottom: 0.35rem;
+    }
+
+    .achieve-card p {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+    }
+
+    .cert-table {
+      border-top: 1px solid var(--border-line);
+    }
+
+    .cert-row {
+      display: grid;
+      grid-template-columns: 210px 1fr;
+      padding: 1.1rem 0;
+      border-bottom: 1px solid var(--border-line);
+      font-size: 0.92rem;
+    }
+
+    .cert-issuer {
+      color: var(--accent-red);
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-size: 0.78rem;
+    }
+
+    /* =========================================
+       06. SERVICES & PACKAGES
+       ========================================= */
+    .packages-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      margin-top: 1.5rem;
+    }
+
+    .package-card {
+      padding: 2rem;
+      border: 1px solid var(--border-line);
+      background: linear-gradient(155deg, rgba(159, 18, 57, 0.16) 0%, var(--bg-card) 65%);
+      backdrop-filter: blur(12px);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: transform 0.35s ease, border-color 0.35s ease;
+    }
+
+    .package-card:hover {
+      transform: translateY(-6px);
+      border-color: var(--accent-red);
+    }
+
+    .package-card h3 {
+      font-family: var(--font-sans);
+      font-size: 1.35rem;
+      margin: 0.35rem 0 0.65rem;
+    }
+
+    .package-price {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-size: 1.65rem;
+      color: var(--text-main);
+      margin-bottom: 1rem;
+    }
+
+    .package-list {
+      list-style: none;
+      margin-bottom: 1.8rem;
+      border-top: 1px solid var(--border-line);
+      padding-top: 1rem;
+    }
+
+    .package-list li {
+      font-size: 0.86rem;
+      color: var(--text-muted);
+      padding: 0.38rem 0;
+    }
+
+    /* =========================================
+       07. LIVE CLIENT FEEDBACK WALL (Firebase + Photo + Like + Comment)
+       ========================================= */
+    .feedback-summary-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+      padding: 1.1rem 1.5rem;
+      border: 1px solid var(--border-line);
+      background: rgba(255, 255, 255, 0.02);
+      margin-bottom: 2rem;
+    }
+
+    .rating-highlight {
+      font-family: var(--font-sans);
+      font-size: 1.25rem;
+      font-weight: 800;
+    }
+
+    .feedback-layout {
+      display: grid;
+      grid-template-columns: 0.95fr 1.25fr;
+      gap: 2.2rem;
+      align-items: start;
+    }
+
+    .review-form-box {
+      padding: 2rem;
+      border: 1px solid var(--border-line);
+      background: var(--bg-card);
+      backdrop-filter: blur(12px);
+    }
+
+    .review-form-box h3 {
+      font-family: var(--font-sans);
+      font-size: 1.25rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .form-group {
+      margin-bottom: 1rem;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.72rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 0.4rem;
+    }
+
+    .form-input,
+    .form-select,
+    .form-textarea {
+      width: 100%;
+      padding: 0.78rem 0.95rem;
+      background: rgba(10, 10, 12, 0.9);
+      border: 1px solid var(--border-line);
+      color: var(--text-main);
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+      outline: none;
+      transition: border-color 0.25s ease;
+    }
+
+    .form-input:focus,
+    .form-select:focus,
+    .form-textarea:focus {
+      border-color: var(--accent-red);
+    }
+
+    .star-picker {
+      display: flex;
+      gap: 0.45rem;
+    }
+
+    .star-btn {
+      background: transparent;
+      border: 1px solid var(--border-line);
+      color: var(--text-muted);
+      font-size: 1.15rem;
+      padding: 0.35rem 0.65rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .star-btn.selected,
+    .star-btn:hover {
+      color: #fbbf24;
+      border-color: #fbbf24;
+    }
+
+    .photo-upload-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.68rem 1rem;
+      border: 1px dashed var(--border-line);
+      font-size: 0.8rem;
+      color: var(--text-main);
+      cursor: pointer;
+      width: 100%;
+      justify-content: center;
+      transition: border-color 0.25s ease;
+    }
+
+    .photo-upload-label:hover {
+      border-color: var(--accent-red);
+    }
+
+    .photo-preview-wrap {
+      margin-top: 0.75rem;
+      display: none;
+      position: relative;
+      width: 96px;
+      height: 96px;
+      border: 1px solid var(--border-line);
+    }
+
+    .photo-preview-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .remove-photo-btn {
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      width: 22px;
+      height: 22px;
+      background: var(--accent-red);
+      color: #fff;
+      border: none;
+      font-size: 0.75rem;
+      cursor: pointer;
+    }
+
+    .reviews-feed {
+      display: flex;
+      flex-direction: column;
+      gap: 1.35rem;
+    }
+
+    .review-card {
+      padding: 1.75rem;
+      border: 1px solid var(--border-line);
+      background: linear-gradient(135deg, var(--accent-crimson) 0%, var(--bg-card) 55%);
+      backdrop-filter: blur(12px);
+    }
+
+    .review-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 1rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .reviewer-name {
+      font-family: var(--font-sans);
+      font-size: 1.05rem;
+      font-weight: 700;
+    }
+
+    .review-meta {
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent-red);
+    }
+
+    .review-stars {
+      color: #fbbf24;
+      font-size: 0.92rem;
+      letter-spacing: 0.1em;
+    }
+
+    .review-quote {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-size: 1.05rem;
+      color: var(--text-main);
+      margin-bottom: 1rem;
+      line-height: 1.55;
+    }
+
+    .review-attached-img {
+      width: 100%;
+      max-height: 260px;
+      object-fit: cover;
+      border: 1px solid var(--border-line);
+      margin-bottom: 1rem;
+    }
+
+    .review-footer-actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+      padding-top: 0.85rem;
+      border-top: 1px solid var(--border-line);
+    }
+
+    .action-pill-group {
+      display: flex;
+      gap: 0.65rem;
+    }
+
+    .react-btn {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border-line);
+      color: var(--text-muted);
+      padding: 0.35rem 0.8rem;
+      font-size: 0.76rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: all 0.25s ease;
+    }
+
+    .react-btn:hover,
+    .react-btn.liked {
+      border-color: var(--accent-red);
+      color: var(--text-main);
+    }
+
+    .admin-del-btn {
+      display: none;
+      background: rgba(225, 29, 72, 0.15);
+      border: 1px solid var(--accent-red);
+      color: #fff;
+      padding: 0.3rem 0.7rem;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      cursor: pointer;
+    }
+
+    body.admin-unlocked .admin-del-btn {
+      display: inline-block;
+    }
+
+    /* Comments / Replies inside Review Card */
+    .comments-box {
+      margin-top: 1rem;
+      padding-top: 0.85rem;
+      border-top: 1px dashed var(--border-line);
+    }
+
+    .comment-item {
+      padding: 0.55rem 0.8rem;
+      background: rgba(255, 255, 255, 0.025);
+      border-left: 2px solid var(--accent-red);
+      margin-bottom: 0.55rem;
+      font-size: 0.84rem;
+    }
+
+    .comment-author {
+      font-weight: 600;
+      color: var(--text-main);
+      margin-right: 0.4rem;
+    }
+
+    .comment-form {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 0.6rem;
+    }
+
+    .comment-form input {
+      flex: 1;
+      padding: 0.48rem 0.75rem;
+      background: rgba(10, 10, 12, 0.9);
+      border: 1px solid var(--border-line);
+      color: var(--text-main);
+      font-size: 0.82rem;
+    }
+
+    /* =========================================
+       08. CONTACT FOOTER (With Social Icons)
+       ========================================= */
+    .footer-sec {
+      min-height: 85vh;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .contact-strip {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      flex-wrap: wrap;
+      gap: 2rem;
+      margin-top: 2rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--border-line);
+    }
+
+    .email-display {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-size: clamp(1.25rem, 3vw, 2.2rem);
+      color: var(--text-main);
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    .email-display:hover {
+      color: var(--accent-red);
+    }
+
+    .footer-socials {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    .social-icon-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.58rem 1rem;
+      border: 1px solid var(--border-line);
+      background: rgba(255, 255, 255, 0.025);
+      color: var(--text-main);
+      text-decoration: none;
+      font-size: 0.74rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      transition: all 0.25s ease;
+    }
+
+    .social-icon-link svg {
+      width: 15px;
+      height: 15px;
+      fill: currentColor;
+      flex-shrink: 0;
+    }
+
+    .social-icon-link:hover {
+      border-color: var(--accent-red);
+      background: var(--accent-crimson);
+      transform: translateY(-2px);
+    }
+
+    .copyright-line {
+      margin-top: 3.5rem;
+      padding-top: 1.2rem;
+      border-top: 1px solid var(--border-line);
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+      font-size: 0.76rem;
+      letter-spacing: 0.1em;
+      color: var(--text-muted);
+    }
+
+    /* Scroll Reveal */
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.75s ease, transform 0.75s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* =========================================
+       MOBILE RESPONSIVE CHOREOGRAPHY & PILLS
+       ========================================= */
+    @media (max-width: 860px) {
+      .navbar {
+        padding: 0.85rem 4%;
+      }
+
+      .brand {
+        font-size: 0.78rem;
+        gap: 0.45rem;
+      }
+
+      .nav-links a:not(:last-child) {
+        display: none;
+      }
+
+      .nav-links a:last-child {
+        padding: 0.35rem 0.75rem;
+        border: 1px solid var(--border-line);
+        font-size: 0.68rem;
+        color: var(--text-main);
+      }
+
+      .section {
+        padding: 6.5rem 0 4.5rem;
+      }
+
+      .video-stage {
+        width: 72vw;
+        right: -12%;
+        z-index: 0;
+      }
+
+      .video-stage.pos-hero {
+        right: -12%;
+        opacity: 0.36;
+      }
+
+      .video-stage.pos-about {
+        right: 36%;
+        opacity: 0.32;
+      }
+
+      .video-stage.pos-bg {
+        right: -8%;
+        opacity: 0.16;
+      }
+
+      .about-split,
+      .journey-split,
+      .editorial-project,
+      .packages-grid,
+      .feedback-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .journey-sticky-title {
+        position: static;
+      }
+
+      .about-spacer {
+        height: 150px;
+      }
+
+      .proj-stack-list {
+        border-left: none;
+        border-top: 1px solid var(--border-line);
+        padding-left: 0;
+        padding-top: 1rem;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+      }
+
+      .proj-stack-list li {
+        padding: 0.28rem 0.7rem;
+        border: 1px solid var(--border-line);
+        background: rgba(255, 255, 255, 0.03);
+        font-size: 0.74rem;
+      }
+
+      .skill-row {
+        grid-template-columns: 42px 1fr;
+      }
+
+      .skill-items {
+        grid-column: 1 / -1;
+      }
+
+      .achieve-grid,
+      .cert-row {
+        grid-template-columns: 1fr;
+        gap: 0.4rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 00. Editorial Preloader -->
+  <div class="preloader" id="preloader">
+    <div class="loader-name">ISHTIYAQ GULZAR<span class="dot">.</span></div>
+    <div class="loader-count" id="loaderCount">0%</div>
+  </div>
+
+  <!-- 3-Clip Sticky Choreography Stage (Slow playback, freezes on final pose) -->
+  <div class="video-stage pos-hero" id="videoStage" aria-hidden="true">
+    <video class="stage-clip active" id="vid1" muted playsinline preload="auto">
+      <source src="ishu/video1.mp4" type="video/mp4" />
+    </video>
+    <video class="stage-clip" id="vid2" muted playsinline preload="auto">
+      <source src="ishu/video2.mp4" type="video/mp4" />
+    </video>
+    <video class="stage-clip" id="vid3" muted playsinline preload="auto">
+      <source src="ishu/video3.mp4" type="video/mp4" />
+    </video>
+    <div class="stage-vignette"></div>
+  </div>
+
+  <!-- Fixed Minimal Navigation -->
+  <header class="navbar">
+    <a href="#hero" class="brand">
+      <span class="brand-badge">IG</span>
+      <span>ISHTIYAQ GULZAR<span class="dot">.</span></span>
+    </a>
+    <nav class="nav-links">
+      <a href="#hero">Home</a>
+      <a href="#about">About</a>
+      <a href="#skills">Skills</a>
+      <a href="#work">Work</a>
+      <a href="#journey">Journey</a>
+      <a href="#packages">Services</a>
+      <a href="#feedback">Reviews</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <main>
+    <!-- 01. HERO SECTION -->
+    <section id="hero" class="section">
+      <div class="container">
+        <div class="hero-wrap reveal">
+          <p class="hero-role">Full-Stack Web Designer &bull; Shopian, Jammu &amp; Kashmir</p>
+          <h1 class="hero-title">ISHTIYAQ<br />GULZAR<span class="dot">.</span></h1>
+          <p class="hero-tagline">Building clean interfaces.<br />Engineering what's next.</p>
+          <p class="hero-bio">
+            Freelance full-stack web designer crafting dark-mode business websites, luxury wedding e-invites, interactive celebration cards, and Python + SQLite3 web apps.
+          </p>
+          <div class="cta-group">
+            <a href="#work" class="btn btn-white">Explore My Work &rarr;</a>
+            <a href="#feedback" class="btn btn-dark">Client Reviews</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 02. ABOUT SECTION -->
+    <section id="about" class="section">
+      <div class="container about-split">
+        <div class="about-spacer"></div>
+        <div class="about-body reveal">
+          <div class="about-portrait-card">
+            <img src="ishu/img.png" alt="Ishtiyaq Gulzar" />
+          </div>
+          <span class="section-kicker">01 / About</span>
+          <h2 class="editorial-heading">DESIGNER<br /><span class="serif-italic">in the making<span class="dot">.</span></span></h2>
+          <p>
+            I'm <strong>Ishtiyaq Gulzar</strong> (online handle <strong>Eshu927</strong>), a freelance full-stack web designer based in <strong>Shopian, Jammu &amp; Kashmir</strong>, operating under my brand <em>Bhat ishtiyaq #webdesigner</em>.
+          </p>
+          <p>
+            From deploying live client domains like <strong>paulinterior.in</strong> and building Python Flask &amp; SQLite3 order portals to designing bespoke digital wedding invitations and interactive celebration cards, I deliver complete web solutions built with precision.
+          </p>
+
+          <div class="stats-2x2">
+            <div class="stat-box">
+              <h4>15+ Projects</h4>
+              <span>Websites, Weddings &amp; E-Cards</span>
+            </div>
+            <div class="stat-box">
+              <h4>1.2M+ Views</h4>
+              <span>Spotlight Content Reach</span>
+            </div>
+            <div class="stat-box">
+              <h4>Full-Stack</h4>
+              <span>HTML/JS &bull; Python &bull; SQLite3</span>
+            </div>
+            <div class="stat-box">
+              <h4>NIELIT O Level</h4>
+              <span>R5.1 Candidate (2027)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 03. SKILLS ("TOOL kit.") -->
+    <section id="skills" class="section">
+      <div class="container">
+        <span class="section-kicker reveal">02 / Skills</span>
+        <h2 class="editorial-heading reveal">TOOL <span class="serif-italic">kit<span class="dot">.</span></span></h2>
+
+        <div class="skills-table">
+          <div class="skill-row reveal">
+            <span class="skill-idx">01</span>
+            <span class="skill-name">Frontend</span>
+            <div class="skill-items">
+              <span>HTML5</span>
+              <span>CSS3</span>
+              <span>JavaScript (ES6+)</span>
+              <span>Responsive Dark UI</span>
+              <span>Canvas &amp; Keyframe Animations</span>
+            </div>
+          </div>
+
+          <div class="skill-row reveal">
+            <span class="skill-idx">02</span>
+            <span class="skill-name">Backend &amp; DB</span>
+            <div class="skill-items">
+              <span>Python</span>
+              <span>Flask</span>
+              <span>SQLite3</span>
+              <span>Firebase Realtime DB</span>
+            </div>
+          </div>
+
+          <div class="skill-row reveal">
+            <span class="skill-idx">03</span>
+            <span class="skill-name">Deployment &amp; Office</span>
+            <div class="skill-items">
+              <span>GitHub Pages</span>
+              <span>GoDaddy DNS Setup</span>
+              <span>Tally</span>
+              <span>MS Excel</span>
+              <span>PowerPoint</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="diving-bar reveal">
+          <span class="diving-label">Currently Diving Into:</span>
+          <span>NIELIT O Level R5.1 (Python Programming M3-R5 &amp; IoT M4-R5)</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 04. SELECTED WORK (15 Projects across 3 Categories + Live Modal) -->
+    <section id="work" class="section">
+      <div class="container">
+        <span class="section-kicker reveal">03 / Selected Projects</span>
+        <h2 class="editorial-heading reveal">SELECTED <span class="serif-italic">work<span class="dot">.</span></span></h2>
+
+        <!-- Category Filter Tabs -->
+        <div class="filter-tabs reveal" role="tablist">
+          <button class="filter-btn active" data-filter="all">All (15)</button>
+          <button class="filter-btn" data-filter="business">Business Sites (6)</button>
+          <button class="filter-btn" data-filter="wedding">Wedding Invites (4)</button>
+          <button class="filter-btn" data-filter="occasions">Special Occasions (5)</button>
+        </div>
+
+        <div class="projects-stack">
+          <!-- BUSINESS WEBSITES (1 - 6) -->
+          <article class="editorial-project reveal" data-category="business"
+            data-title="Paul Interior (paulinterior.in)"
+            data-tag="01 • Live Business Website"
+            data-desc="Designed and launched a responsive interior showcase website featuring interactive star ratings, live user reviews, custom GoDaddy DNS configuration, and GitHub Pages hosting."
+            data-features="Custom domain DNS setup on GoDaddy|Interactive star rating & review system|Mobile-responsive interior gallery|Fast static hosting via GitHub Pages">
+            <div>
+              <span class="proj-tag">01 &bull; Live Business Website</span>
+              <h3>Paul Interior (paulinterior.in)</h3>
+              <p>Designed and launched a responsive interior showcase website featuring interactive star ratings, live user reviews, custom GoDaddy DNS configuration, and GitHub Pages hosting.</p>
+              <div class="proj-actions">
+                <button class="btn btn-dark btn-sm open-modal-btn">View Details</button>
+                <a class="btn btn-white btn-sm wa-order-btn" data-project="Paul Interior Business Website" href="#" target="_blank" rel="noopener">Order Similar</a>
+              </div>
+            </div>
+            <ul class="proj-stack-list">
+              <li>HTML5 / CSS3</li>
+              <li>JavaScript</li>
+              <li>GoDaddy DNS</li>
+              <li>GitHub Pages</li>
+            </ul>
+          </article>
+
+          <article class="editorial-project reveal" data-category="business"
+            data-title="Faizan Printing Press Portal"
+            data-tag="02 • Full-Stack Order System"
+            data-desc="Built an interactive customer print order booking and management web application powered by a Python Flask server and SQLite3 database."
+            data-features="Real-time order confirmation modals|Python Flask REST routes|SQLite3 relational database storage|Print specification & quantity calculator">
+            <div>
+              <span class="proj-tag">02 &bull; Full-Stack Order System</span>
+              <h3>Faizan Printing Press Portal</h3>
+              <p>Built an interactive customer print order booking and management web application powered by a Python Flask server and SQLite3 database.</p>
+              <div class="proj-actions">
+                <button class="btn btn-dark btn-sm open-modal-btn">View Details</button>
+                <a class="btn btn-white btn-sm wa-order-btn" data-project="Full-Stack Order Portal" href="#" target="_blank" rel="noopener">Order Similar</a>
+              </div>
+            </div>
+            <ul class="proj-stack-list">
+              <li>Python</li>
+              <li>Flask</li>
+              <li>SQLite3</li>
+              <li>HTML / CSS / JS</li>
+            </ul>
+          </article>
+
+          <article class="editorial-project reveal" data-category="business"
+            data-title="Kashmir Saffron & Dry Fruits Storefront"
+            data-tag="03 • E-Commerce Showcase"
+            data-desc="Dark-luxury product catalog crafted for Kashmiri artisanal goods with instant WhatsApp order cart integration and mobile-first checkout flow."
+            data-features="Dynamic JavaScript shopping cart|One-click WhatsApp order summary|High-contrast dark luxury product cards|Optimized for fast mobile browsing">
+            <div>
+              <span class="proj-tag">03 &bull; E-Commerce Showcase</span>
+              <h3>Kashmir Saffron &amp; Dry Fruits Storefront</h3>
+              <p>Dark-luxury product catalog crafted for Kashmiri artisanal goods with instant WhatsApp order cart integration and mobile-first checkout flow.</p>
+              <div class="proj-actions">
+                <button class="btn btn-dark btn-sm open-modal-btn">View Details</button>
+                <a class="btn btn-white btn-sm wa-order-btn" data-project="E-Commerce Storefront" href="#" target="_blank" rel="noopener">Order Similar</a>
+              </div>
+            </div>
+            <ul class="proj-stack-list">
+              <li>HTML5 / CSS3</li>
+              <li>JavaScript Cart</li>
+              <li>WhatsApp API</li>
+            </ul>
+          </article>
+
+          <article class="editorial-project reveal" data-category="business"
+            data-title="Modern Café & Restaurant Digital Menu"
+            data-tag="04 • Hospitality & Dining"
+            data-desc="QR-scannable interactive menu with category filtering, chef specials spotlight, and instant table reservation inquiry form."
+            data-features="Instant category filter tabs|Table QR code ready layout|Chef specials & combo highlights|Direct table booking inquiry">
+            <div>
+              <span class="proj-tag">04 &bull; Hospitality &amp; Dining</span>
+              <h3>Modern Café &amp; Restaurant Digital Menu</h3>
+              <p>QR-scannable interactive menu with category filtering, chef specials spotlight, and instant table reservation inquiry form.</p>
+              <div class="proj-actions">
+                <button class="btn btn-dark btn-sm open-modal-btn">View Details</button>
+                <a class="btn btn-white btn-sm wa-order-btn" data-project="Digital Restaurant Menu" href="#" target="_blank" rel="noopener">Order Similar</a>
+              </div>
+            </div>
+            <ul class="proj-stack-list">
+              <li>Responsive UI</li>
+              <li>Vanilla JS</li>
+              <li>QR Integration</li>
+            </ul>
+          </article>
+
+          <article class="editorial-project reveal" data-category="business"
+            data-title="Developer Portfolio Suite (Eshu927.github.io)"
+            data-tag="05 • Personal Brand & Portfolio"
+            data-desc="Editorial dark-mode portfolio featuring scroll-choreographed video stages, interactive entry prompts, and smooth CSS micro-interactions."
+            data-features="Multi-stage scroll video choreography|Editorial serif + sans-serif typography|Live Firebase feedback & photo wall|100% responsive mobile-first build">
+            <div>
+              <span class="proj-tag">05 &bull; Personal Brand &amp; Portfolio</span>
+              <h3>Developer Portfolio Suite (Eshu927.github.io)</h3>
+              <p>Editorial dark-mode portfolio featuring scroll-choreographed video stages, interactive entry prompts, and smooth CSS micro-interactions.</p>
+              <div class="proj-actions">
+                <button class="btn btn-dark btn-sm open-modal-btn">View Details</button>
+                <a class="btn btn-white btn-sm wa-order-btn" data-project="Custom Personal Portfolio" href="#" target="_blank" rel="noopener">Order Similar</a>
+              </div>
+            </div>
+            <ul class="proj-stack-list">
+              <li>Editorial UI/UX</li>
+              <li>CSS Choreography</li>
+              <li>GitHub Pages</li>
+            </ul>
+          </article>
+
+          <article class="editorial-project reveal" data-category="business"
+            data-title="Prime Property & Architecture Showcase"
+            data-tag="06 • Real Estate & Architecture"
+            data-desc="Filterable property showcase portal featuring floor-plan previews, location highlights, and direct client consultation modals."
+            data-features="Location & budget property filters|Interactive floor-plan preview cards|Direct agent callback modal|Clean architectural grid layout">
+            <div>
+              <span class="proj-tag">06 &bull; Real Estate &amp; Architecture</span>
+              <h3>Prime Property &amp; Architecture Showcase</h3>
+              <p>Filterable property showcase portal featuring floor-plan previews, location highlights, and direct client consultation modals.</p>
+              <div class="proj-actions">
+                <button class="btn btn-dark btn-sm open-modal-btn">View Details</button>
+                <a class="btn btn-white btn-sm wa-order-btn" data-project="Real Estate Showcase Website" href="#" target="_blank" rel="noopener">Order Similar</a>
+              </div>
+            </div>
+            <ul class="proj-stack-list">
+              <li>HTML5 / CSS Grid</li>
+              <li>JavaScript Filter</li>
+              <li>Lead Modal</li>
+            </ul>
+          </article>
+
+          <!-- WEDDING & NIKAH DIGITAL INVITATIONS (7 - 10) -->
+          <article class="editorial-project reveal" data-category="wedding"
+            data-title="Royal Nikah & Walima Digital Invitation"
+            data-tag="07 • Luxury Wedding E-Invite"
+            data-desc="Bespoke gold-and-charcoal animated digital wedding card featuring ceremony timings, Google Maps venue navigation, and one-tap RSVP confirmation."
+            data-features="Animated gold foil & editorial typography|One-tap Google Maps venue directions|Interactive RSVP guest confirmation|Easy WhatsApp link sharing">
+            <div>
+              <span class="proj-tag">07 &bull; Luxury Wedding E-Invite</span>
+              <h3>Royal Nikah &amp; Walima Digital Invitation</h3>
+              <p>Bespoke gold-and-charcoal animated digital wedding card featuring ceremony timings, Google Maps venue navigation, and one-tap RSVP confirmation.</p>
+              <div class="proj-actions">
+                <button class="btn btn-dark btn-sm open-modal-btn">View Details</button>
+                <a class="btn btn-white btn-sm wa-order-btn" data-project="Royal Nikah & Walima E-Invite" href="#" target="_blank" rel="noopener">Order Similar</a>
+              </div>
+            </div>
+            <ul class="proj-stack-list">
+              <li>Custom Typography</li>
+              <li>CSS Animations</li>
+              <li>Maps Pin &amp; RSVP</li>
+            </ul>
+          </article>
+
+          <article class="editorial-project reveal" data-category="wedding"
+            data-title="Multi-Day Wedding Itinerary & Guest Portal"
+            data-tag="08 • Wedding Microsite"
+            data-desc="Dedicated event portal organizing Mehendi, Haldi, Baraat, and Reception schedules alongside dress-code guides and host contact cards."
+            data-features="Day-by-day ceremony timeline|Dress-code & venue etiquette guide|Family host quick-call buttons|Mobile-optimized guest experience">
+            <div>
+              <span class="proj-tag">08 &bull; Wedding Microsite</span>
+              <h3>Multi-Day Wedding Itinerary &amp; Guest Portal</h3>
+              <p>Dedicated event portal organizing Mehendi, Haldi, Baraat, and Reception schedules alongside dress-code guides and host contact cards.</p>
+              <div class="proj-actions">
+                <button class="btn btn-dark btn-sm open-modal-btn">View Details</button>
+                <a class="btn btn-white btn-sm wa-order-btn" data-project="Multi-Day Wedding Portal" href="#" target="_blank" rel="noopener">Order Similar</a>
+              </div>
+            </div>
+            <ul class="proj-stack-list">
+              <li>Multi-Section UI</li>
+              <li>JavaScript</li>
+              <li>Mobile First</li>
+            </ul>
+          </article>
+
+          <article class="editorial-project reveal" data-category="wedding"
+            data-title="Wedding Live Countdown & Couple Story"
+            data-tag="09 • Interactive Wedding Showcase"
+            data-desc="Scroll-animated wedding showcase featuring a live day-hour-minute countdown timer, pre-wedding gallery, and ambient background music toggle."
+            data-features="Live real-time wedding countdown|Smooth parallax couple gallery|Custom background music toggle|Save-the-date calendar reminder">
+            <div>
+              <span class="proj-tag">09 &bull; Interactive Wedding Showcase</span>
+              <h3>Wedding Live Countdown &amp; Couple Story</h3>
+              <p>Scroll-animated wedding showcase featuring a live day-hour-minute countdown timer, pre-wedding gallery, and ambient background music toggle.</p>
+              <div class="proj-actions">
+                <button class="btn btn-dark btn-sm open-modal-btn">View Details</button>
+                <a class="btn btn-white btn-sm wa-order-btn" data-project="Wedding Countdown Showcase" href="#" target="_blank" rel="noopener">Order Similar</a>
+              </div>
+            </div>
+            <ul class="proj-stack-list">
+              <li>Live JS Timer</li>
+              <li>Parallax Gallery</li>
+              <li>Web Audio API</li>
+            </ul>
+          </article>
+
+          <article class="editorial-project reveal" data-category="wedding"
+            data-title="QR Reception Wishes & Memory Wall"
+            data-tag="10 • Event Guestbook"
+            data-desc="Interactive digital blessing wall allowing wedding guests to scan a table QR code and post real-time congratulatory messages."
+            data-features="Live Firebase message feed|Table QR code instant access|Photo & blessing submission|Permanent keepsake export for couple">
+            <div>
+              <span class="proj-tag">10 &bull; Event Guestbook</span>
+              <h3>QR Reception Wishes &amp; Memory Wall</h3>
+              <p>Interactive digital blessing wall allowing wedding guests to scan a table QR code and post real-time congratulatory messages.</p>
+              <div class="proj-actions">
+                <button class="btn btn-dark btn-sm open-modal-btn">View Details</button>
+                <a class="btn btn-white btn-sm wa-order-btn" data-project="QR Reception Memory Wall" href="#" target="_blank" rel="noopener">Order Similar</a>
+              </div>
+            </div>
+            <ul class="proj-stack-list">
+              <li>Firebase Realtime DB</li>
+              <li>HTML / CSS / JS</li>
+              <li>QR Access</li>
+            </ul>
+          </article>
+
+          <!-- SPECIAL OCCASIONS & INTERACTIVE E-CARDS (11 - 15) -->
+          <article class="editorial-project reveal" data-category="occasions"
+            data-title="Night-Sky Moon & Fireworks Greeting Experience"
+            data-tag="11 • Celestial Interactive Card"
+            data-desc="Multi-page dark celestial digital card featuring twinkling starfields, shooting stars, and multi-color canvas fireworks crafted in pure JavaScript."
+            data-features="HTML5 Canvas multi-color fireworks|Glowing moon & shooting star animations|Multi-step interactive letter reveal|Smooth mobile touch performance">
+            <div>
+              <span class="proj-tag">11 &bull; Celestial Interactive Card</span>
+              <h3>Night-Sky Moon &amp; Fireworks Greeting Experience</h3>
+              <p>Multi-page dark celestial digital card featuring twinkling starfields, shooting stars, and multi-color canvas fireworks crafted in pure JavaScript.</p>
+              <div class="proj-actions">
+                <button class="btn btn-dark btn-sm open-modal-btn">View Details</button>
+                <a class="btn btn-white btn-sm wa-order-btn" data-project="Celestial Fireworks Web Card" href="#" target="_blank" rel="noopener">Order Similar</a>
+              </div>
+            </div>
+            <ul class="proj-stack-list">
+              <li>HTML5 Canvas</li>
+              <li>JavaScript</li>
+              <li>CSS Keyframes</li>
+            </ul>
+          </article>
+
+          <article class="editorial-project reveal" data-category="occasions"
+            data-title="Midnight Birthday Countdown & Surprise Reveal"
+            data-tag="12 • Birthday Celebration"
+            data-desc="Custom-coded live countdown page that unlocks animated wishes, confetti bursts, and a personalized message screen right at 12:00 AM."
+            data-features="12:00 AM time-locked surprise screen|Interactive confetti & celebration effects|Custom photo & message timeline|Shareable private link">
+            <div>
+              <span class="proj-tag">12 &bull; Birthday Celebration</span>
+              <h3>Midnight Birthday Countdown &amp; Surprise Reveal</h3>
+              <p>Custom-coded live countdown page that unlocks animated wishes, confetti bursts, and a personalized message screen right at 12:00 AM.</p>
+              <div class="proj-actions">
+                <button class="btn btn-dark btn-sm open-modal-btn">View Details</button>
+                <a class="btn btn-white btn-sm wa-order-btn" data-project="Midnight Birthday Surprise Page" href="#" target="_blank" rel="noopener">Order Similar</a>
+              </div>
+            </div>
+            <ul class="proj-stack-list">
+              <li>Countdown Logic</li>
+              <li>Confetti JS</li>
+              <li>Interactive Reveal</li>
+            </ul>
+          </article>
+
+          <article class="editorial-project reveal" data-category="occasions"
+            data-title="Passcode-Protected Milestone & Memory Vault"
+            data-tag="13 • Digital Keepsake"
+            data-desc="Private digital scrapbook with custom passcode entry, animated polaroid memory timeline, and relationship/friendship milestone counters."
+            data-features="Custom secret question/PIN entry gate|Animated polaroid memory cards|Live days/hours milestone counter|Personal audio & note attachments">
+            <div>
+              <span class="proj-tag">13 &bull; Digital Keepsake</span>
+              <h3>Passcode-Protected Milestone &amp; Memory Vault</h3>
+              <p>Private digital scrapbook with custom passcode entry, animated polaroid memory timeline, and relationship/friendship milestone counters.</p>
+              <div class="proj-actions">
+                <button class="btn btn-dark btn-sm open-modal-btn">View Details</button>
+                <a class="btn btn-white btn-sm wa-order-btn" data-project="Passcode Memory Vault" href="#" target="_blank" rel="noopener">Order Similar</a>
+              </div>
+            </div>
+            <ul class="proj-stack-list">
+              <li>JS Access Gate</li>
+              <li>Timeline UI</li>
+              <li>Responsive Layout</li>
+            </ul>
+          </article>
+
+          <article class="editorial-project reveal" data-category="occasions"
+            data-title="Gamified Decision & Celebration Card"
+            data-tag="14 • Playful Interactive UX"
+            data-desc="Interactive choice-based web card featuring playful physics button movement, multi-step reveals, and celebratory screen transitions."
+            data-features="Playful evasive button physics|Multi-stage celebration screen|Custom sound & visual feedback|Works smoothly on all phones">
+            <div>
+              <span class="proj-tag">14 &bull; Playful Interactive UX</span>
+              <h3>Gamified Decision &amp; Celebration Card</h3>
+              <p>Interactive choice-based web card featuring playful physics button movement, multi-step reveals, and celebratory screen transitions.</p>
+              <div class="proj-actions">
+                <button class="btn btn-dark btn-sm open-modal-btn">View Details</button>
+                <a class="btn btn-white btn-sm wa-order-btn" data-project="Gamified Interactive Web Card" href="#" target="_blank" rel="noopener">Order Similar</a>
+              </div>
+            </div>
+            <ul class="proj-stack-list">
+              <li>DOM Physics</li>
+              <li>CSS Transitions</li>
+              <li>Touch Optimized</li>
+            </ul>
+          </article>
+
+          <article class="editorial-project reveal" data-category="occasions"
+            data-title="Eid Mubarak & Festive Lantern Web Card"
+            data-tag="15 • Festive E-Card"
+            data-desc="Shareable festive greeting link featuring glowing crescent moon artwork, swinging lantern animations, and personalized sender name parameters."
+            data-features="Dynamic sender/receiver name via URL|Glowing crescent moon & lantern SVG|Lightweight instant-loading page|One-click WhatsApp forward button">
+            <div>
+              <span class="proj-tag">15 &bull; Festive E-Card</span>
+              <h3>Eid Mubarak &amp; Festive Lantern Web Card</h3>
+              <p>Shareable festive greeting link featuring glowing crescent moon artwork, swinging lantern animations, and personalized sender name parameters.</p>
+              <div class="proj-actions">
+                <button class="btn btn-dark btn-sm open-modal-btn">View Details</button>
+                <a class="btn btn-white btn-sm wa-order-btn" data-project="Festive Animated E-Card" href="#" target="_blank" rel="noopener">Order Similar</a>
+              </div>
+            </div>
+            <ul class="proj-stack-list">
+              <li>URL Query Params</li>
+              <li>SVG &amp; CSS Motion</li>
+              <li>Fast Mobile Load</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- 05. JOURNEY (11 Impressive Milestones), ACHIEVEMENTS & CERTIFICATIONS -->
+    <section id="journey" class="section">
+      <div class="container">
+        <div class="journey-split">
+          <div class="journey-sticky-title reveal">
+            <span class="section-kicker">04 / Experience &amp; Milestones</span>
+            <h2 class="editorial-heading">THE <span class="serif-italic">journey<span class="dot">.</span></span></h2>
+          </div>
+
+          <div>
+            <div class="timeline-block reveal">
+              <span class="proj-tag">01 &bull; Present (2026)</span>
+              <h4>Founder &amp; Lead Web Designer &mdash; Bhat ishtiyaq #webdesigner</h4>
+              <p>Delivering custom commercial websites, luxury wedding e-invites, interactive celebration cards, and Python web prototypes for clients.</p>
+            </div>
+
+            <div class="timeline-block reveal">
+              <span class="proj-tag">02 &bull; 2026 &bull; Live Production</span>
+              <h4>Commercial Domain Deployment (paulinterior.in)</h4>
+              <p>Engineered, configured GoDaddy custom DNS records, and launched a live interior design business website on production hosting.</p>
+            </div>
+
+            <div class="timeline-block reveal">
+              <span class="proj-tag">03 &bull; 2026 &bull; Full-Stack Engineering</span>
+              <h4>Database-Driven Order Portal (Faizan Printing Press)</h4>
+              <p>Architected a full-stack print order management system integrating a Python Flask backend with an SQLite3 relational database.</p>
+            </div>
+
+            <div class="timeline-block reveal">
+              <span class="proj-tag">04 &bull; 2026 &bull; Creative Niche</span>
+              <h4>Digital Wedding &amp; Special Occasion Web Studio</h4>
+              <p>Built a signature collection of interactive Nikah/Walima e-invites, live countdown pages, and multi-page celestial greeting experiences.</p>
+            </div>
+
+            <div class="timeline-block reveal">
+              <span class="proj-tag">05 &bull; 2026 &bull; Viral Reach</span>
+              <h4>1.2M+ Organic Views Milestone on Spotlight</h4>
+              <p>Achieved over 1.2 million views through high-retention visual editing and digital content creation.</p>
+            </div>
+
+            <div class="timeline-block reveal">
+              <span class="proj-tag">06 &bull; 2026 &bull; Resourceful Engineering</span>
+              <h4>Mobile-First Full-Stack Development Workflow</h4>
+              <p>Mastered coding, testing, database management, and GitHub deployments entirely from an Android smartphone using Pydroid 3 and mobile IDEs.</p>
+            </div>
+
+            <div class="timeline-block reveal">
+              <span class="proj-tag">07 &bull; 2026 &bull; Local Brand Presence</span>
+              <h4>Verified Google Business Profile &amp; Maps Listing</h4>
+              <p>Established a verified digital presence on Google Maps to help Shopian and regional businesses get online effortlessly.</p>
+            </div>
+
+            <div class="timeline-block reveal">
+              <span class="proj-tag">08 &bull; 2026 &ndash; 2027 (Expected March 2027)</span>
+              <h4>NIELIT O Level (Revision 5.1) &mdash; Florida Institution</h4>
+              <p>Specializing in IT Tools (M1-R5), Web Designing &amp; Publishing (M2-R5), Python Programming (M3-R5), and IoT (M4-R5) with Srinagar exam centre.</p>
+            </div>
+
+            <div class="timeline-block reveal">
+              <span class="proj-tag">09 &bull; 2025 &ndash; 2026 &bull; UI Motion</span>
+              <h4>Interactive Canvas &amp; Scroll-Choreographed Design</h4>
+              <p>Developed pure JavaScript particle engines, starfields, fireworks, and multi-stage scroll video layouts without heavy external libraries.</p>
+            </div>
+
+            <div class="timeline-block reveal">
+              <span class="proj-tag">10 &bull; Completed Certification</span>
+              <h4>Certificate in Computer Concepts &amp; Applications (CCCA)</h4>
+              <p>Certified in core computer operations, Tally accounting workflows, MS Excel data management, and PowerPoint presentations.</p>
+            </div>
+
+            <div class="timeline-block reveal">
+              <span class="proj-tag">11 &bull; Academic Foundation</span>
+              <h4>Higher Secondary Education (10+2) &mdash; Jammu &amp; Kashmir</h4>
+              <p>Completed senior secondary education before dedicating full focus to full-stack web design and software development.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Achievements -->
+        <div style="margin-top: 4rem;">
+          <h3 class="editorial-heading reveal" style="font-size: clamp(1.9rem, 3.8vw, 3rem);">
+            ACHIEVE<span class="serif-italic">ments<span class="dot">.</span></span>
+          </h3>
+          <div class="achieve-grid">
+            <div class="achieve-card reveal">
+              <h4>1.2M+ Spotlight Reach</h4>
+              <p>Crossed over 1.2 million views on viral short-form visual content.</p>
+            </div>
+            <div class="achieve-card reveal">
+              <h4>Mobile-First Full-Stack Workflow</h4>
+              <p>Architected and deployed live domains and Flask + SQLite3 apps entirely via smartphone tools.</p>
+            </div>
+          </div>
+
+          <!-- Certifications -->
+          <h3 class="editorial-heading reveal" style="font-size: clamp(1.9rem, 3.8vw, 3rem);">
+            CERTI<span class="serif-italic">fications<span class="dot">.</span></span>
+          </h3>
+          <div class="cert-table reveal">
+            <div class="cert-row">
+              <span class="cert-issuer">NIELIT (In Progress)</span>
+              <span>O Level Information Technology (Revision 5.1)</span>
+            </div>
+            <div class="cert-row">
+              <span class="cert-issuer">Computer Applications</span>
+              <span>Certificate in Computer Concepts &amp; Applications (CCCA)</span>
+            </div>
+            <div class="cert-row">
+              <span class="cert-issuer">Google Business</span>
+              <span>Verified Web Design Business Profile Management</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 06. SERVICES & PACKAGES -->
+    <section id="packages" class="section">
+      <div class="container">
+        <span class="section-kicker reveal">05 / Services &amp; Packages</span>
+        <h2 class="editorial-heading reveal">SERVICES <span class="serif-italic">&amp; pricing<span class="dot">.</span></span></h2>
+
+        <div class="packages-grid">
+          <div class="package-card reveal">
+            <div>
+              <span class="proj-tag">01 &bull; Weddings &amp; Celebrations</span>
+              <h3>Digital E-Invite &amp; Event Card</h3>
+              <div class="package-price">Custom Quote</div>
+              <ul class="package-list">
+                <li>&bull; Animated Nikah / Walima / Birthday Card</li>
+                <li>&bull; Live Countdown &amp; Venue Maps Pin</li>
+                <li>&bull; Background Music &amp; Photo Gallery</li>
+                <li>&bull; Fast Shareable Link Delivery</li>
+              </ul>
+            </div>
+            <a class="btn btn-dark wa-order-btn" data-project="Digital E-Invite / Event Card" href="#" target="_blank" rel="noopener">Book on WhatsApp</a>
+          </div>
+
+          <div class="package-card reveal">
+            <div>
+              <span class="proj-tag">02 &bull; Most Popular</span>
+              <h3>Business &amp; Portfolio Website</h3>
+              <div class="package-price">Complete Setup</div>
+              <ul class="package-list">
+                <li>&bull; Custom Dark or Light Editorial UI</li>
+                <li>&bull; Mobile-First Responsive Pages</li>
+                <li>&bull; WhatsApp Inquiry &amp; Google Maps</li>
+                <li>&bull; Domain &amp; DNS Deployment Support</li>
+              </ul>
+            </div>
+            <a class="btn btn-white wa-order-btn" data-project="Business / Portfolio Website" href="#" target="_blank" rel="noopener">Book on WhatsApp</a>
+          </div>
+
+          <div class="package-card reveal">
+            <div>
+              <span class="proj-tag">03 &bull; Custom Software</span>
+              <h3>Full-Stack Web Application</h3>
+              <div class="package-price">Tailored Build</div>
+              <ul class="package-list">
+                <li>&bull; HTML/CSS/JS + Python Flask Backend</li>
+                <li>&bull; SQLite3 / Firebase Database</li>
+                <li>&bull; Order Management &amp; Admin Controls</li>
+                <li>&bull; Ongoing Technical Support</li>
+              </ul>
+            </div>
+            <a class="btn btn-dark wa-order-btn" data-project="Full-Stack Web Application" href="#" target="_blank" rel="noopener">Book on WhatsApp</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 07. LIVE CLIENT FEEDBACK WALL (Realtime Database + Photo + Like + Comment) -->
+    <section id="feedback" class="section">
+      <div class="container">
+        <span class="section-kicker reveal">06 / Client Wall</span>
+        <h2 class="editorial-heading reveal">CLIENT <span class="serif-italic">feedback<span class="dot">.</span></span></h2>
+
+        <!-- Live Stats Bar + Hidden Admin Toggle -->
+        <div class="feedback-summary-bar reveal">
+          <div>
+            <span class="rating-highlight" id="avgRatingDisplay">&#9733; 5.0 / 5.0</span>
+            <span style="color: var(--text-muted); font-size: 0.85rem; margin-left: 0.75rem;" id="totalReviewsDisplay">Live Verified Reviews</span>
+          </div>
+          <button id="adminToggleBtn" class="btn btn-dark btn-sm" title="Admin Moderation">Admin Mode</button>
+        </div>
+
+        <div class="feedback-layout">
+          <!-- Left: Submit Live Feedback + Mobile Photo Upload -->
+          <div class="review-form-box reveal">
+            <h3>Leave Your Feedback<span class="dot">.</span></h3>
+            <form id="reviewForm">
+              <div class="form-group">
+                <label for="revName">Your Name</label>
+                <input type="text" id="revName" class="form-input" placeholder="e.g. ishtiyaq Gulzar" required />
+              </div>
+
+              <div class="form-group">
+                <label for="revProject">Project Type</label>
+                <select id="revProject" class="form-select">
+                  <option value="Business Website">Business Website</option>
+                  <option value="Wedding Digital Invite">Wedding Digital Invite</option>
+                  <option value="Full-Stack Web App">Full-Stack Web App</option>
+                  <option value="Special Occasion Card">Special Occasion Card</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+
+              <div class="form-group" id="otherProjectGroup" style="display:none;">
+                <label for="revOtherProject">Specify Project Type</label>
+                <input type="text" id="revOtherProject" class="form-input" placeholder="Enter your project type..." />
+              </div>
+
+              <div class="form-group">
+                <label>Rating</label>
+                <div class="star-picker" id="starPicker">
+                  <button type="button" class="star-btn selected" data-val="1">&#9733;</button>
+                  <button type="button" class="star-btn selected" data-val="2">&#9733;</button>
+                  <button type="button" class="star-btn selected" data-val="3">&#9733;</button>
+                  <button type="button" class="star-btn selected" data-val="4">&#9733;</button>
+                  <button type="button" class="star-btn selected" data-val="5">&#9733;</button>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="revMessage">Your Experience</label>
+                <textarea id="revMessage" class="form-textarea" rows="3" placeholder="Share your experience working with Ishtiyaq..." required></textarea>
+              </div>
+
+              <div class="form-group">
+                <label>Attach Photo (Optional)</label>
+                <label class="photo-upload-label" for="revPhotoInput">
+                  <span>+ Choose Photo from Gallery / Camera</span>
+                </label>
+                <input type="file" id="revPhotoInput" accept="image/*" style="display:none;" />
+                <div class="photo-preview-wrap" id="photoPreviewWrap">
+                  <img id="photoPreviewImg" src="" alt="Preview" />
+                  <button type="button" class="remove-photo-btn" id="removePhotoBtn">&times;</button>
+                </div>
+              </div>
+
+              <button type="submit" class="btn btn-white" id="submitReviewBtn" style="width:100%;">Publish Review Live</button>
+              <p id="formFeedbackStatus" style="font-size:0.8rem; color:#4ade80; margin-top:0.65rem;"></p>
+            </form>
+          </div>
+
+          <!-- Right: Live Reviews Feed -->
+          <div class="reviews-feed" id="reviewsFeed">
+            <!-- Live Firebase & Default Verified Reviews render here -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 08. CONTACT FOOTER (With Social Icons) -->
+    <footer id="contact" class="section footer-sec">
+      <div class="container">
+        <span class="section-kicker reveal">07 / Contact</span>
+        <h2 class="editorial-heading reveal">
+          HAVE AN IDEA?<br />
+          <span class="serif-italic">Let's build something</span> <span class="red">MEANINGFUL</span><span class="dot">.</span>
+        </h2>
+
+        <div class="contact-strip reveal">
+          <div>
+            <span class="section-kicker" style="margin-bottom: 0.3rem;">Write to me</span>
+            <a href="mailto:aibhat541@gmail.com" class="email-display">aibhat541@gmail.com</a>
+          </div>
+
+          <div class="footer-socials">
+            <button id="copyEmailBtn" class="btn btn-dark btn-sm" data-email="aibhat541@gmail.com">Copy Email</button>
+
+            <a class="social-icon-link wa-order-btn" data-project="New Web Design Project" href="#" target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91C21.95 6.45 17.5 2 12.04 2zm5.82 14.01c-.24.68-1.41 1.3-1.95 1.38-.5.08-1.13.11-1.82-.11-.42-.13-.96-.31-1.65-.61-2.9-1.25-4.79-4.17-4.94-4.36-.14-.19-1.18-1.57-1.18-3 0-1.43.75-2.13 1.01-2.42.27-.29.58-.36.78-.36.19 0 .39 0 .56.01.18.01.42-.07.66.5.24.58.82 2.01.89 2.15.07.15.12.32.02.51-.1.19-.15.32-.29.49-.15.17-.31.38-.44.51-.15.15-.3.31-.13.6.17.29.75 1.24 1.62 2.01 1.11.99 2.05 1.3 2.34 1.44.29.15.46.12.63-.07.17-.19.73-.85.92-1.14.19-.29.39-.24.66-.15.27.1 1.7.8 1.99.95.29.15.49.22.56.34.07.12.07.7-.17 1.38z"/></svg>
+              <span>WhatsApp</span>
+            </a>
+
+            <a class="social-icon-link" href="https://github.com/Eshu927" target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.11.79-.25.79-.56 0-.28-.01-1.02-.02-2-3.2.7-3.88-1.54-3.88-1.54-.52-1.33-1.28-1.68-1.28-1.68-1.05-.72.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.29 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11.06 11.06 0 0 1 5.8 0c2.21-1.49 3.18-1.18 3.18-1.18.63 1.59.23 2.76.11 3.05.74.8 1.19 1.83 1.19 3.09 0 4.42-2.69 5.39-5.26 5.68.41.36.78 1.06.78 2.14 0 1.55-.01 2.8-.01 3.18 0 .31.21.68.8.56A11.51 11.51 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5z"/></svg>
+              <span>GitHub</span>
+            </a>
+
+            <a class="social-icon-link" href="https://instagram.com/jaani_927" target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.8 2h8.4C19.4 2 22 4.6 22 7.8v8.4a5.8 5.8 0 0 1-5.8 5.8H7.8C4.6 22 2 19.4 2 16.2V7.8A5.8 5.8 0 0 1 7.8 2zm-.2 2A3.6 3.6 0 0 0 4 7.6v8.8C4 18.39 5.61 20 7.6 20h8.8a3.6 3.6 0 0 0 3.6-3.6V7.6C20 5.61 18.39 4 16.4 4H7.6zm9.65 1.5a1.25 1.25 0 1 1 0 2.5 1.25 1.25 0 0 1 0-2.5zM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10zm0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6z"/></svg>
+              <span>Instagram</span>
+            </a>
+
+            <a class="social-icon-link" href="https://www.facebook.com/bhat.ishtiyaq.737" target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13.5 22v-8.2h2.76l.41-3.2H13.5V8.56c0-.93.26-1.56 1.59-1.56h1.7V4.14c-.29-.04-1.3-.13-2.48-.13-2.45 0-4.13 1.5-4.13 4.25v2.34H7.4v3.2h2.78V22h3.32z"/></svg>
+              <span>Facebook</span>
+            </a>
+          </div>
+        </div>
+
+        <div class="copyright-line">
+          <span>&copy; 2026 ISHTIYAQ GULZAR &bull; BHAT ISHTIYAQ #WEBDESIGNER</span>
+          <span>SHOPIAN, JAMMU &amp; KASHMIR</span>
+        </div>
+      </div>
+    </footer>
+  </main>
+
+  <!-- Project Detail Modal -->
+  <div class="modal-backdrop" id="projectModal" role="dialog" aria-modal="true">
+    <div class="modal-card">
+      <button class="modal-close" id="closeModalBtn" aria-label="Close">&times;</button>
+      <span class="proj-tag" id="modalTag"></span>
+      <h3 id="modalTitle" style="font-family:var(--font-sans); font-size:1.6rem; margin-bottom:0.7rem;"></h3>
+      <p id="modalDesc" style="color:var(--text-muted); font-size:0.94rem;"></p>
+      <ul class="modal-features" id="modalFeatures"></ul>
+      <div class="cta-group">
+        <a id="modalWaBtn" class="btn btn-white btn-sm" href="#" target="_blank" rel="noopener">Request This Project on WhatsApp &rarr;</a>
+        <button class="btn btn-dark btn-sm" id="modalDoneBtn">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Firebase Compat SDK for Live Cross-Device Reviews, Photos, Likes & Comments -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+
+  <script>
+    // =========================================
+    // 0. EDITORIAL PRELOADER
+    // =========================================
+    const preloader = document.getElementById('preloader');
+    const loaderCount = document.getElementById('loaderCount');
+    let count = 0;
+
+    function finishPreloader() {
+      if (loaderCount) loaderCount.textContent = '100%';
+      if (preloader) preloader.classList.add('loaded');
+    }
+
+    const countInterval = setInterval(() => {
+      count += 10;
+      if (loaderCount) loaderCount.textContent = count + '%';
+      if (count >= 100) {
+        clearInterval(countInterval);
+        setTimeout(finishPreloader, 180);
+      }
+    }, 55);
+
+    setTimeout(() => {
+      clearInterval(countInterval);
+      finishPreloader();
+    }, 1200);
+
+    // =========================================
+    // 1. 3-VIDEO SLOW CHOREOGRAPHY & FREEZE ON FINAL POSE
+    // =========================================
+    const stage = document.getElementById('videoStage');
+    const vid1 = document.getElementById('vid1');
+    const vid2 = document.getElementById('vid2');
+    const vid3 = document.getElementById('vid3');
+    const allVids = [vid1, vid2, vid3];
+    const aboutSec = document.getElementById('about');
+    const skillsSec = document.getElementById('skills');
+
+    let currentActiveVid = null;
+
+    allVids.forEach((v) => {
+      v.playbackRate = 0.72;
+      v.addEventListener('loadedmetadata', () => {
+        v.playbackRate = 0.72;
+      });
+    });
+
+    function activateStage(activeVid, posClass) {
+      stage.className = 'video-stage ' + posClass;
+
+      if (currentActiveVid === activeVid) return;
+      currentActiveVid = activeVid;
+
+      allVids.forEach((v) => {
+        if (v === activeVid) {
+          v.classList.add('active');
+          v.currentTime = 0;
+          v.playbackRate = 0.72;
+          v.play().catch(() => {});
+        } else {
+          v.classList.remove('active');
+          v.pause();
+        }
+      });
+    }
+
+    function syncScrollChoreography() {
+      const scrollY = window.scrollY;
+      const trigger = window.innerHeight * 0.42;
+
+      if (scrollY < aboutSec.offsetTop - trigger) {
+        activateStage(vid1, 'pos-hero');
+      } else if (scrollY >= aboutSec.offsetTop - trigger && scrollY < skillsSec.offsetTop - trigger) {
+        activateStage(vid2, 'pos-about');
+      } else {
+        activateStage(vid3, 'pos-bg');
+      }
+    }
+
+    window.addEventListener('scroll', syncScrollChoreography, { passive: true });
+    window.addEventListener('resize', syncScrollChoreography);
+    syncScrollChoreography();
+
+    // =========================================
+    // 2. PROJECT CATEGORY FILTER TABS
+    // =========================================
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    const projectCards = document.querySelectorAll('.editorial-project');
+
+    filterBtns.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        filterBtns.forEach((b) => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        const selected = btn.getAttribute('data-filter');
+        projectCards.forEach((card) => {
+          const cat = card.getAttribute('data-category');
+          if (selected === 'all' || cat === selected) {
+            card.classList.remove('hidden-card');
+            card.classList.add('visible');
+          } else {
+            card.classList.add('hidden-card');
+          }
+        });
+      });
+    });
+
+    // =========================================
+    // 3. WHATSAPP DIRECT INQUIRY LINKS
+    // =========================================
+    const WHATSAPP_NUMBER = "919149604818";
+
+    function buildWhatsAppUrl(projectName) {
+      const msg = `Hello Ishtiyaq! I visited your portfolio and would like to inquire about: ${projectName}.`;
+      return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
+    }
+
+    document.querySelectorAll('.wa-order-btn').forEach((btn) => {
+      const proj = btn.getAttribute('data-project') || 'Web Design Services';
+      btn.setAttribute('href', buildWhatsAppUrl(proj));
+    });
+
+    // =========================================
+    // 4. PROJECT DETAIL MODAL
+    // =========================================
+    const modal = document.getElementById('projectModal');
+    const modalTag = document.getElementById('modalTag');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalDesc = document.getElementById('modalDesc');
+    const modalFeatures = document.getElementById('modalFeatures');
+    const modalWaBtn = document.getElementById('modalWaBtn');
+
+    document.querySelectorAll('.open-modal-btn').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const card = btn.closest('.editorial-project');
+        const title = card.getAttribute('data-title');
+        const tag = card.getAttribute('data-tag');
+        const desc = card.getAttribute('data-desc');
+        const feats = (card.getAttribute('data-features') || '').split('|');
+
+        modalTag.textContent = tag;
+        modalTitle.textContent = title;
+        modalDesc.textContent = desc;
+        modalFeatures.innerHTML = feats.map((f) => `<li>${f}</li>`).join('');
+        modalWaBtn.setAttribute('href', buildWhatsAppUrl(title));
+        modal.classList.add('open');
+      });
+    });
+
+    function closeModal() {
+      modal.classList.remove('open');
+    }
+    document.getElementById('closeModalBtn').addEventListener('click', closeModal);
+    document.getElementById('modalDoneBtn').addEventListener('click', closeModal);
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) closeModal();
+    });
+
+    // =========================================
+    // 5. LIVE CLIENT FEEDBACK (Firebase Realtime DB + Photo + Like + Comment)
+    // =========================================
+    const FIREBASE_DB_URL = "https://portfolioreviews-3a745-default-rtdb.asia-southeast1.firebasedatabase.app";
+    let db = null;
+
+    try {
+      if (typeof firebase !== 'undefined' && FIREBASE_DB_URL.startsWith('https://')) {
+        firebase.initializeApp({ databaseURL: FIREBASE_DB_URL });
+        db = firebase.database();
+      }
+    } catch (e) {
+      db = null;
+    }
+
+    const defaultReviews = {
+      seed_1: {
+        name: "Paul Interior",
+        project: "Business Website • paulinterior.in",
+        rating: 5,
+        message: "Ishtiyaq delivered a clean, modern website for our interior business and handled the entire domain and hosting setup smoothly.",
+        photo: "",
+        likes: 14,
+        timestamp: 1730000000000,
+        comments: {
+          c1: { author: "Ishtiyaq Gulzar", text: "Thank you! It was a pleasure building paulinterior.in." }
+        }
+      },
+      seed_2: {
+        name: "Faizan Printing Press",
+        project: "Full-Stack Web App",
+        rating: 5,
+        message: "Our online order portal built with Python and SQLite3 works fast on mobile and makes managing print requests effortless.",
+        photo: "",
+        likes: 11,
+        timestamp: 1731000000000,
+        comments: {}
+      },
+      seed_3: {
+        name: "Tariq Ahmad Mir",
+        project: "Wedding Digital Invite",
+        rating: 5,
+        message: "Everyone in our family loved the animated Nikah and Walima digital card. The Google Maps venue pin and countdown worked flawlessly on every phone.",
+        photo: "",
+        likes: 18,
+        timestamp: 1732000000000,
+        comments: {}
+      },
+      seed_4: {
+        name: "Aadil Hussain",
+        project: "Business Website • Saffron Storefront",
+        rating: 5,
+        message: "Clean dark design with instant WhatsApp order checkout. Customers can browse our products and send orders in seconds.",
+        photo: "",
+        likes: 9,
+        timestamp: 1733000000000,
+        comments: {}
+      },
+      seed_5: {
+        name: "Saima Jan",
+        project: "Special Occasion Card",
+        rating: 5,
+        message: "The midnight birthday countdown and celestial fireworks page was super creative and loaded smoothly without any lag.",
+        photo: "",
+        likes: 16,
+        timestamp: 1734000000000,
+        comments: {}
+      },
+      seed_6: {
+        name: "Zubair Dar",
+        project: "Business Website • Digital Menu",
+        rating: 5,
+        message: "Our QR restaurant menu looks sharp and easy to navigate. Updating specials and taking table inquiries is much smoother now.",
+        photo: "",
+        likes: 12,
+        timestamp: 1735000000000,
+        comments: {}
+      },
+      seed_7: {
+        name: "Bilal Ahmad Bhat",
+        project: "Wedding Digital Invite",
+        rating: 5,
+        message: "Very professional work and quick delivery. The custom typography and music toggle gave our invitation a truly premium feel.",
+        photo: "",
+        likes: 15,
+        timestamp: 1736000000000,
+        comments: {}
+      },
+      seed_8: {
+        name: "Kamran Lone",
+        project: "Business Website • Property Showcase",
+        rating: 5,
+        message: "Great attention to layout and mobile responsiveness. Highly recommend Ishtiyaq if you want a modern, fast-loading website.",
+        photo: "",
+        likes: 10,
+        timestamp: 1737000000000,
+        comments: {}
+      }
+    };
+
+    // Show/Hide custom input when "Other" is chosen in Project Type
+    const revProjectSelect = document.getElementById('revProject');
+    const otherProjectGroup = document.getElementById('otherProjectGroup');
+    const revOtherProjectInput = document.getElementById('revOtherProject');
+
+    revProjectSelect.addEventListener('change', () => {
+      if (revProjectSelect.value === 'Other') {
+        otherProjectGroup.style.display = 'block';
+        revOtherProjectInput.required = true;
+      } else {
+        otherProjectGroup.style.display = 'none';
+        revOtherProjectInput.required = false;
+        revOtherProjectInput.value = '';
+      }
+    });
+
+    let selectedRating = 5;
+    let compressedPhotoData = "";
+    const starBtns = document.querySelectorAll('.star-btn');
+
+    starBtns.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        selectedRating = parseInt(btn.getAttribute('data-val'), 10);
+        starBtns.forEach((b) => {
+          const val = parseInt(b.getAttribute('data-val'), 10);
+          b.classList.toggle('selected', val <= selectedRating);
+        });
+      });
+    });
+
+    const photoInput = document.getElementById('revPhotoInput');
+    const previewWrap = document.getElementById('photoPreviewWrap');
+    const previewImg = document.getElementById('photoPreviewImg');
+    const removePhotoBtn = document.getElementById('removePhotoBtn');
+
+    photoInput.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        const img = new Image();
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          const maxDim = 480;
+          let w = img.width;
+          let h = img.height;
+          if (w > maxDim || h > maxDim) {
+            if (w > h) {
+              h = Math.round((h * maxDim) / w);
+              w = maxDim;
+            } else {
+              w = Math.round((w * maxDim) / h);
+              h = maxDim;
+            }
+          }
+          canvas.width = w;
+          canvas.height = h;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, w, h);
+          compressedPhotoData = canvas.toDataURL('image/jpeg', 0.72);
+          previewImg.src = compressedPhotoData;
+          previewWrap.style.display = 'block';
+        };
+        img.src = ev.target.result;
+      };
+      reader.readAsDataURL(file);
+    });
+
+    removePhotoBtn.addEventListener('click', () => {
+      compressedPhotoData = "";
+      photoInput.value = "";
+      previewWrap.style.display = 'none';
+    });
+
+    function escapeHtml(str) {
+      return String(str || '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    function renderReviews(reviewsObj) {
+      const feed = document.getElementById('reviewsFeed');
+      const avgDisplay = document.getElementById('avgRatingDisplay');
+      const countDisplay = document.getElementById('totalReviewsDisplay');
+      const entries = Object.entries(reviewsObj).sort((a, b) => (b[1].timestamp || 0) - (a[1].timestamp || 0));
+
+      let sum = 0;
+      entries.forEach(([, r]) => { sum += Number(r.rating || 5); });
+      const avg = entries.length ? (sum / entries.length).toFixed(1) : '5.0';
+      avgDisplay.innerHTML = `&#9733; ${avg} / 5.0`;
+      countDisplay.textContent = `${entries.length} Verified Client Reviews`;
+
+      const likedSet = JSON.parse(localStorage.getItem('ig_liked_reviews') || '[]');
+
+      feed.innerHTML = entries.map(([id, r]) => {
+        const stars = '&#9733;'.repeat(r.rating || 5) + '&#9734;'.repeat(5 - (r.rating || 5));
+        const isLiked = likedSet.includes(id);
+        const commentsList = r.comments ? Object.entries(r.comments) : [];
+
+        const commentsHtml = commentsList.map(([cid, c]) => `
+          <div class="comment-item">
+            <span class="comment-author">${escapeHtml(c.author)}:</span>
+            <span style="color:var(--text-muted);">${escapeHtml(c.text)}</span>
+            <button class="admin-del-btn" style="float:right; padding:1px 6px;" onclick="deleteComment('${id}','${cid}')">x</button>
+          </div>
+        `).join('');
+
+        return `
+          <article class="review-card">
+            <div class="review-header">
+              <div>
+                <div class="reviewer-name">${escapeHtml(r.name)}</div>
+                <div class="review-meta">${escapeHtml(r.project)}</div>
+              </div>
+              <div class="review-stars">${stars}</div>
+            </div>
+            <p class="review-quote">&ldquo;${escapeHtml(r.message)}&rdquo;</p>
+            ${r.photo ? `<img class="review-attached-img" src="${r.photo}" alt="Client Attachment" />` : ''}
+            <div class="review-footer-actions">
+              <div class="action-pill-group">
+                <button class="react-btn ${isLiked ? 'liked' : ''}" onclick="toggleLike('${id}', ${r.likes || 0})">
+                  <span>&#9829;</span> <span>${r.likes || 0}</span>
+                </button>
+                <span class="react-btn" style="cursor:default;">
+                  <span>&#128172;</span> <span>${commentsList.length}</span>
+                </span>
+              </div>
+              <button class="admin-del-btn" onclick="deleteReview('${id}')">Delete Review</button>
+            </div>
+            <div class="comments-box">
+              ${commentsHtml}
+              <form class="comment-form" onsubmit="submitComment(event, '${id}')">
+                <input type="text" placeholder="Write a comment or reply..." required />
+                <button type="submit" class="btn btn-dark btn-sm">Post</button>
+              </form>
+            </div>
+          </article>
+        `;
+      }).join('');
+    }
+
+    let localStoreReviews = JSON.parse(localStorage.getItem('ig_portfolio_reviews') || 'null') || { ...defaultReviews };
+
+    function loadLiveReviews() {
+      if (db) {
+        db.ref('portfolio_reviews').on('value', (snap) => {
+          const val = snap.val();
+          if (val) {
+            renderReviews({ ...defaultReviews, ...val });
+          } else {
+            renderReviews(defaultReviews);
+          }
+        }, () => {
+          renderReviews(localStoreReviews);
+        });
+      } else {
+        renderReviews(localStoreReviews);
+      }
+    }
+    loadLiveReviews();
+
+    // Submit New Review
+    document.getElementById('reviewForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const name = document.getElementById('revName').value.trim();
+      const chosenType = revProjectSelect.value;
+      const customType = revOtherProjectInput.value.trim();
+      const project = chosenType === 'Other' ? (customType || 'Other Project') : chosenType;
+      const message = document.getElementById('revMessage').value.trim();
+      const statusEl = document.getElementById('formFeedbackStatus');
+
+      if (!name || !message) return;
+
+      const newEntry = {
+        name,
+        project,
+        rating: selectedRating,
+        message,
+        photo: compressedPhotoData,
+        likes: 1,
+        timestamp: Date.now(),
+        comments: {}
+      };
+
+      if (db) {
+        db.ref('portfolio_reviews').push(newEntry);
+      } else {
+        const key = 'rev_' + Date.now();
+        localStoreReviews[key] = newEntry;
+        localStorage.setItem('ig_portfolio_reviews', JSON.stringify(localStoreReviews));
+        renderReviews(localStoreReviews);
+      }
+
+      e.target.reset();
+      otherProjectGroup.style.display = 'none';
+      compressedPhotoData = "";
+      previewWrap.style.display = 'none';
+      statusEl.textContent = "Thank you! Your review is now live.";
+      setTimeout(() => { statusEl.textContent = ""; }, 3500);
+    });
+
+    // Global Handlers for Like, Comment & Admin Delete
+    window.toggleLike = function(id, currentLikes) {
+      const likedSet = JSON.parse(localStorage.getItem('ig_liked_reviews') || '[]');
+      if (likedSet.includes(id)) return;
+      likedSet.push(id);
+      localStorage.setItem('ig_liked_reviews', JSON.stringify(likedSet));
+
+      const nextLikes = (Number(currentLikes) || 0) + 1;
+      if (db && !id.startsWith('seed_')) {
+        db.ref(`portfolio_reviews/${id}/likes`).set(nextLikes);
+      } else if (localStoreReviews[id]) {
+        localStoreReviews[id].likes = nextLikes;
+        localStorage.setItem('ig_portfolio_reviews', JSON.stringify(localStoreReviews));
+        renderReviews(localStoreReviews);
+      }
+    };
+
+    window.submitComment = function(e, reviewId) {
+      e.preventDefault();
+      const input = e.target.querySelector('input');
+      const text = input.value.trim();
+      if (!text) return;
+
+      const isAdmin = document.body.classList.contains('admin-unlocked');
+      const commentObj = {
+        author: isAdmin ? "Ishtiyaq Gulzar (Owner)" : "Visitor",
+        text
+      };
+
+      if (db && !reviewId.startsWith('seed_')) {
+        db.ref(`portfolio_reviews/${reviewId}/comments`).push(commentObj);
+      } else if (localStoreReviews[reviewId]) {
+        if (!localStoreReviews[reviewId].comments) localStoreReviews[reviewId].comments = {};
+        localStoreReviews[reviewId].comments['c_' + Date.now()] = commentObj;
+        localStorage.setItem('ig_portfolio_reviews', JSON.stringify(localStoreReviews));
+        renderReviews(localStoreReviews);
+      }
+      input.value = "";
+    };
+
+    window.deleteReview = function(reviewId) {
+      if (db && !reviewId.startsWith('seed_')) {
+        db.ref(`portfolio_reviews/${reviewId}`).remove();
+      } else if (localStoreReviews[reviewId]) {
+        delete localStoreReviews[reviewId];
+        localStorage.setItem('ig_portfolio_reviews', JSON.stringify(localStoreReviews));
+        renderReviews(localStoreReviews);
+      }
+    };
+
+    window.deleteComment = function(reviewId, commentId) {
+      if (db && !reviewId.startsWith('seed_')) {
+        db.ref(`portfolio_reviews/${reviewId}/comments/${commentId}`).remove();
+      } else if (localStoreReviews[reviewId] && localStoreReviews[reviewId].comments) {
+        delete localStoreReviews[reviewId].comments[commentId];
+        localStorage.setItem('ig_portfolio_reviews', JSON.stringify(localStoreReviews));
+        renderReviews(localStoreReviews);
+      }
+    };
+
+    // Admin Mode Unlock (PIN: 9270)
+    document.getElementById('adminToggleBtn').addEventListener('click', () => {
+      if (document.body.classList.contains('admin-unlocked')) {
+        document.body.classList.remove('admin-unlocked');
+        document.getElementById('adminToggleBtn').textContent = 'Admin Mode';
+        return;
+      }
+      const pin = prompt("Enter Admin PIN:");
+      if (pin === "9270") {
+        document.body.classList.add('admin-unlocked');
+        document.getElementById('adminToggleBtn').textContent = 'Exit Admin';
+      }
+    });
+
+    // =========================================
+    // 6. SMOOTH SCROLL REVEAL
+    // =========================================
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+
+    document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
+
+    // =========================================
+    // 7. COPY EMAIL BUTTON
+    // =========================================
+    const copyBtn = document.getElementById('copyEmailBtn');
+    if (copyBtn) {
+      copyBtn.addEventListener('click', async () => {
+        const email = copyBtn.getAttribute('data-email');
+        try {
+          await navigator.clipboard.writeText(email);
+          copyBtn.textContent = 'Copied!';
+        } catch {
+          copyBtn.textContent = email;
+        }
+        setTimeout(() => {
+          copyBtn.textContent = 'Copy Email';
+        }, 3000);
+      });
+    }
+  </script>
+</body>
+</html>
