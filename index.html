@@ -103,7 +103,7 @@
       pointer-events: none;
       transition:
         right 0.95s cubic-bezier(0.22, 1, 0.36, 1),
-        opacity 0.85s ease,
+        opacity 0.75s ease,
         transform 0.95s cubic-bezier(0.22, 1, 0.36, 1);
     }
 
@@ -146,10 +146,10 @@
       transform: scale(1);
     }
 
-    .video-stage.pos-bg {
+    .video-stage.pos-hidden {
       right: 2%;
-      opacity: 0.22;
-      transform: scale(1.03);
+      opacity: 0;
+      transform: scale(1.02);
     }
 
     /* =========================================
@@ -1099,10 +1099,11 @@
     }
 
     /* =========================================
-       08. CONTACT FOOTER (With Social Icons)
+       08. CONTACT FOOTER (Compact & Clean)
        ========================================= */
     .footer-sec {
-      min-height: 85vh;
+      min-height: auto;
+      padding: 5.5rem 0 2.5rem;
       flex-direction: column;
       justify-content: space-between;
     }
@@ -1168,7 +1169,7 @@
     }
 
     .copyright-line {
-      margin-top: 3.5rem;
+      margin-top: 3rem;
       padding-top: 1.2rem;
       border-top: 1px solid var(--border-line);
       display: flex;
@@ -1220,25 +1221,29 @@
         padding: 6.5rem 0 4.5rem;
       }
 
+      .footer-sec {
+        padding: 4.5rem 0 2rem;
+      }
+
       .video-stage {
-        width: 82vw;
-        right: -10%;
+        width: 72vw;
+        right: -12%;
         z-index: 0;
       }
 
       .video-stage.pos-hero {
-        right: -10%;
-        opacity: 0.78;
+        right: -12%;
+        opacity: 0.65;
       }
 
       .video-stage.pos-about {
-        right: 32%;
-        opacity: 0.68;
+        right: 36%;
+        opacity: 0.55;
       }
 
-      .video-stage.pos-bg {
-        right: -8%;
-        opacity: 0.25;
+      .video-stage.pos-hidden {
+        right: -12%;
+        opacity: 0;
       }
 
       .about-split,
@@ -1298,7 +1303,7 @@
     <div class="loader-count" id="loaderCount">0%</div>
   </div>
 
-  <!-- 3-Clip Sticky Choreography Stage (Slow playback, freezes on final pose) -->
+  <!-- 3-Clip Sticky Choreography Stage (Hero & About only, fades out cleanly below) -->
   <div class="video-stage pos-hero" id="videoStage" aria-hidden="true">
     <video class="stage-clip active" id="vid1" src="https://cdn.jsdelivr.net/gh/Eshu927/Ishtiyaq-Gulzar-@main/Vdo1.mp4" autoplay muted playsinline preload="auto"></video>
     <video class="stage-clip" id="vid2" src="https://cdn.jsdelivr.net/gh/Eshu927/Ishtiyaq-Gulzar-@main/Vdo2.mp4" muted playsinline preload="auto"></video>
@@ -2023,7 +2028,7 @@
       </div>
     </section>
 
-    <!-- 08. CONTACT FOOTER (With Social Icons) -->
+    <!-- 08. CONTACT FOOTER (Compact & Clean) -->
     <footer id="contact" class="section footer-sec">
       <div class="container">
         <span class="section-kicker reveal">07 / Contact</span>
@@ -2118,7 +2123,7 @@
     }, 1200);
 
     // =========================================
-    // 1. 3-VIDEO SLOW CHOREOGRAPHY & FREEZE ON FINAL POSE
+    // 1. 3-VIDEO SLOW CHOREOGRAPHY & CLEAN FADE-OUT BELOW ABOUT
     // =========================================
     const stage = document.getElementById('videoStage');
     const vid1 = document.getElementById('vid1');
@@ -2148,6 +2153,14 @@
     function activateStage(activeVid, posClass) {
       stage.className = 'video-stage ' + posClass;
 
+      if (!activeVid) {
+        if (currentActiveVid) {
+          currentActiveVid.pause();
+          currentActiveVid = null;
+        }
+        return;
+      }
+
       if (currentActiveVid === activeVid) return;
       currentActiveVid = activeVid;
 
@@ -2173,7 +2186,7 @@
       } else if (scrollY >= aboutSec.offsetTop - trigger && scrollY < skillsSec.offsetTop - trigger) {
         activateStage(vid2, 'pos-about');
       } else {
-        activateStage(vid3, 'pos-bg');
+        activateStage(null, 'pos-hidden');
       }
     }
 
