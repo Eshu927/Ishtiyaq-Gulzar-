@@ -2,7 +2,7 @@
 
 Personal editorial portfolio website for **Ishtiyaq Gulzar** (`Eshu927` / *Bhat ishtiyaq #webdesigner*), a full-stack web designer based in **Shopian, Jammu & Kashmir**.
 
-🌐 **Live Site:** [https://eshu927.github.io](https://eshu927.github.io)
+🌐 **Live Site:** [https://eshu927.github.io](https://jaani927.netlify.app)
 
 ---
 
